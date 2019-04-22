@@ -2,7 +2,6 @@ package trie
 
 import (
 	"github.com/syndtr/goleveldb/leveldb"
-	"common"
 )
 
 type NodeBase struct {
@@ -29,7 +28,7 @@ func NewNodeBase(path string) (*NodeBase, error) {
 	return &NodeBase{handler: db}, nil
 }
 
-func (db *NodeBase) node(hash common.Hash) node {
+func (db *NodeBase) node(hash Hash) node {
 	enc, err := db.handler.Get(hash[:], nil)
 	if err != nil || enc == nil {
 		return nil

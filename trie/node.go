@@ -21,7 +21,6 @@ import (
 	"io"
 	"strings"
 
-	"common"
 	"github.com/Myriad-Dreamin/go-rlp/rlp"
 )
 
@@ -175,7 +174,7 @@ func decodeFull(hash, elems []byte) (*fullNode, error) {
 	return n, nil
 }
 
-const hashLen = len(common.Hash{})
+const hashLen = len(Hash{})
 
 func decodeRef(buf []byte) (node, []byte, error) {
 	kind, val, rest, err := rlp.Split(buf)
