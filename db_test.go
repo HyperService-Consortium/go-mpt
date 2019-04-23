@@ -1,13 +1,12 @@
-package trietest
+package trie
 
 import (
-	mpt "github.com/Myriad-Dreamin/go-mpt/trie"
 	"testing"
 	"bytes"
 )
 
 func TestDataBaseSetPutandGet(t *testing.T) {
-	db, err := mpt.NewNodeBase("./testdb")
+	db, err := NewNodeBase("./testdb")
 	if err != nil {
 		t.Error(err)
 		return

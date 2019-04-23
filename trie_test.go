@@ -1,20 +1,19 @@
-package trietest
+package trie
 
 import (
-	mpt "github.com/Myriad-Dreamin/go-mpt/trie"
 	"testing"
 	"bytes"
 )
 
 func TestTrieSetPutandGet(t *testing.T) {
-	db, err := mpt.NewNodeBase("./testdb")
+	db, err := NewNodeBase("./testdb")
 	if err != nil {
 		t.Error(err)
 		return
 	}
 	defer db.Close()
-	var tr *mpt.Trie
-	tr, err = mpt.NewTrie(mpt.HexToHash("56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"), db)
+	var tr *Trie
+	tr, err = NewTrie(HexToHash("56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"), db)
 	if err != nil {
 		t.Error(err)
 		return
@@ -37,7 +36,7 @@ func TestTrieSetPutandGet(t *testing.T) {
 	tr.Commit(nil)
 
 	tr = nil
-	tr, err = mpt.NewTrie(mpt.HexToHash("6e8ebf8f9f4c65496f1d5f79476740076030feffe76a0e27b9ba928c91f0e54f"), db)
+	tr, err = NewTrie(HexToHash("6e8ebf8f9f4c65496f1d5f79476740076030feffe76a0e27b9ba928c91f0e54f"), db)
 
 	toGet = tr.Get([]byte("key"))
 	if !bytes.Equal(expGet, toGet) {

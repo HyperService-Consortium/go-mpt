@@ -12,7 +12,7 @@ import (
 	"reflect"
 	"strings"
 	
-	"github.com/Myriad-Dreamin/go-hexutil/hexutil"
+	"github.com/Myriad-Dreamin/go-hexutil"
 )
 type MerkleHash []byte
 

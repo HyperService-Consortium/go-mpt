@@ -19,7 +19,7 @@ package trie
 import (
 	"hash"
 	"sync"
-	"github.com/Myriad-Dreamin/go-rlp/rlp"
+	"github.com/Myriad-Dreamin/go-rlp"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -70,7 +70,7 @@ func returnHasherToPool(h *hasher) {
 
 // hash collapses a node down into a hash node, also returning a copy of the
 // original node initialized with the computed hash to replace the original one.
-func (h *hasher) hash(n node, db *Database, force bool) (node, node, error) {
+func (h *hasher) hash(n node, db *NodeBase, force bool) (node, node, error) {
 	// If we're not storing the node, just hashing, use available cached data
 	if hash, dirty := n.cache(); hash != nil {
 		if db == nil {
@@ -182,7 +182,7 @@ func (h *hasher) store(n node, db *NodeBase, force bool) (node, error) {
 		hash := BytesToHash(hash)
 
 		db.lock.Lock()
-		db.insert(hash, h.tmp, n)
+		db.insert(hash, h.tmp)
 		db.lock.Unlock()
 
 		// Track external references from account->storage trie
