@@ -3,19 +3,45 @@ package trietest
 import (
 	mpt "github.com/Myriad-Dreamin/go-mpt/trie"
 	"testing"
+	"bytes"
 )
 
-func TestBuildTrie(t *testing.T) {
+func TestTrieSetPutandGet(t *testing.T) {
 	db, err := mpt.NewNodeBase("./testdb")
 	if err != nil {
 		t.Error(err)
 		return
 	}
 	defer db.Close()
-	// var tr *mpt.Trie
-	_, err = mpt.NewTrie(mpt.HexToHash("56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"), db)
+	var tr *mpt.Trie
+	tr, err = mpt.NewTrie(mpt.HexToHash("56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"), db)
 	if err != nil {
 		t.Error(err)
+		return
+	}
+
+	var expGet = []byte("value")
+	tr.Update([]byte("key"), expGet)
+	tr.Update([]byte("kez"), []byte("error"))
+	tr.Update([]byte("keyyy"), []byte("error"))
+	tr.Update([]byte("keyyyyy"), []byte("error"))
+	tr.Update([]byte("ke"), []byte("error"))
+
+	var toGet []byte
+	toGet = tr.Get([]byte("key"))
+	if !bytes.Equal(expGet, toGet) {
+		t.Error("Put value is not equal to Getting value from memory..., expecting", expGet, "but,", toGet)
+		return
+	}
+
+	tr.Commit(nil)
+
+	tr = nil
+	tr, err = mpt.NewTrie(mpt.HexToHash("6e8ebf8f9f4c65496f1d5f79476740076030feffe76a0e27b9ba928c91f0e54f"), db)
+
+	toGet = tr.Get([]byte("key"))
+	if !bytes.Equal(expGet, toGet) {
+		t.Error("Put value is not equal to Getting value from db..., expecting", expGet, "but,", toGet)
 		return
 	}
 }
