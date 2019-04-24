@@ -10,6 +10,10 @@ type NodeBase struct {
 	lock sync.RWMutex
 }
 
+func NewNodeBasefromDB(db *leveldb.DB) (*NodeBase, error) {
+	return &NodeBase{handler: db}, nil
+}
+
 func NewNodeBase(path string) (*NodeBase, error) {
 	db, err := leveldb.OpenFile(path, nil)
 	if err != nil {
