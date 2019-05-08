@@ -33,10 +33,15 @@ func TestTrieSetPutandGet(t *testing.T) {
 		return
 	}
 
-	tr.Commit(nil)
+	var trHash Hash
+	trHash, err = tr.Commit(nil)
 
 	tr = nil
-	tr, err = NewTrie(HexToHash("6e8ebf8f9f4c65496f1d5f79476740076030feffe76a0e27b9ba928c91f0e54f"), db)
+	tr, err = NewTrie(trHash, db)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 
 	toGet = tr.Get([]byte("key"))
 	if !bytes.Equal(expGet, toGet) {
