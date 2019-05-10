@@ -21,6 +21,7 @@ import (
 	"io"
 	"strings"
 
+	//"encoding/hex"
 	"github.com/Myriad-Dreamin/go-rlp"
 )
 
@@ -133,7 +134,31 @@ func DecodeNode(hash, buf []byte) (node, error) {
 	}
 }
 
+func DecodeNodeLazy(hash, buf []byte) (node, error) {
+	if len(buf) == 0 {
+		return nil, io.ErrUnexpectedEOF
+	}
+	elems, _, err := rlp.SplitList(buf)
+	if err != nil {
+		return nil, fmt.Errorf("decode error: %v", err)
+	}
+	switch c, _ := rlp.CountValues(elems); c {
+	case 2:
+		n, err := decodeShort(hash, elems)
+		return n, wrapError(err, "short")
+	case 17:
+		n, err := decodeFull(hash, elems)
+		return n, wrapError(err, "full")
+	default:
+		return nil, fmt.Errorf("invalid number of list elements: %v", c)
+	}
+}
+
+
+
 func decodeShort(hash, elems []byte) (node, error) {
+	// fmt.Println("...........")
+	// fmt.Println(hex.EncodeToString(hash), hex.EncodeToString(elems))
 	kbuf, rest, err := rlp.SplitString(elems)
 	if err != nil {
 		return nil, err
@@ -142,12 +167,14 @@ func decodeShort(hash, elems []byte) (node, error) {
 	key := compactToHex(kbuf)
 	if hasTerm(key) {
 		// value node
+		// fmt.Println("value", key, hex.EncodeToString(kbuf), hex.EncodeToString(rest))
 		val, _, err := rlp.SplitString(rest)
 		if err != nil {
 			return nil, fmt.Errorf("invalid value node: %v", err)
 		}
 		return &ShortNode{key, append(ValueNode{}, val...), flag}, nil
 	}
+	// fmt.Println("novalue", key, hex.EncodeToString(kbuf), hex.EncodeToString(rest))
 	r, _, err := decodeRef(rest)
 	if err != nil {
 		return nil, wrapError(err, "val")

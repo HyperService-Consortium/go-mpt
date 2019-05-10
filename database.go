@@ -1,6 +1,8 @@
 package trie
 
 import (
+	// "fmt"
+	// "encoding/hex"
 	"github.com/syndtr/goleveldb/leveldb"
 	"sync"
 )
@@ -27,6 +29,7 @@ func (db *NodeBase) node(hash Hash) node {
 	if err != nil || enc == nil {
 		return nil
 	}
+	// fmt.Println("node", hex.EncodeToString(hash[:]) , "->", hex.EncodeToString(enc))
 	return mustDecodeNode(hash[:], enc)
 }
 

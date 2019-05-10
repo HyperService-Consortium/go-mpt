@@ -148,8 +148,57 @@ func TestGenerateProof(t *testing.T) {
 	tr.Update([]byte("keyy"), []byte("..."))
 	tr.Update([]byte("keyyyy"), []byte("..."))
 
+	var trHash Hash
+	trHash, err = tr.Commit(nil)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	fmt.Println(trHash)
+	tr, err = NewTrie(trHash, db)
 	var proof [][]byte
+	fmt.Println("--------------------------------")
 	proof, err = tr.TryProve([]byte("keyy"))
+	for _, bt := range(proof) {
+		fmt.Println(hex.EncodeToString(bt))
+	}
+}
+
+func TestGenerateLongProof(t *testing.T) {
+
+	db, err := NewNodeBase("./testdb")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	defer db.Close()
+	var tr *Trie
+	tr, err = NewTrie(HexToHash("56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421"), db)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	tr.Update([]byte("\x20\x20\x20\x20\x20\x20\x20\x20"), []byte("..."))
+	tr.Update([]byte("\x20\x20\x20\x20"), []byte("..."))
+	tr.Update([]byte("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x21"), []byte("..."))
+
+	var trHash Hash
+	trHash, err = tr.Commit(nil)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	fmt.Println(trHash)
+	tr, err = NewTrie(trHash, db)
+	var proof [][]byte
+	fmt.Println("--------------------------------")
+	proof, err = tr.TryProve([]byte("keyy"))
+	for _, bt := range(proof) {
+		fmt.Println(hex.EncodeToString(bt))
+	}
+	fmt.Println("--------------------------------")
+	proof, err = tr.TryProve([]byte("\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x21"))
 	for _, bt := range(proof) {
 		fmt.Println(hex.EncodeToString(bt))
 	}

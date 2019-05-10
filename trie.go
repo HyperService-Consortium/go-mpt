@@ -20,7 +20,6 @@ package trie
 import (
 	"bytes"
 	"fmt"
-	"github.com/Myriad-Dreamin/go-rlp"
 )
 
 var (
@@ -152,11 +151,20 @@ func (t *Trie) Prove(key []byte) [][]byte {
 // If a node was not found in the database, a MissingNodeError is returned.
 func (t *Trie) TryProve(key []byte) ([][]byte, error) {
 	key = keybytesToHex(key)
-	proof, newroot, didResolve, err := t.tryProve(t.root, key, 0)
-	if err == nil && didResolve {
-		t.root = newroot
+	trieHash, err := t.Commit(nil)
+	var pureTrie *Trie
+	pureTrie, err = NewTrie(trieHash, t.db)
+	if err != nil {
+		return nil, err
 	}
-	return proof, err
+	var pbt []byte
+	pbt, err = t.db.Get(trieHash[:])
+	if err != nil {
+		return nil, err
+	}
+	var tailProof [][]byte
+	tailProof, _, _, err = pureTrie.tryProve(pureTrie.root, key, 0)
+	return append([][]byte{trieHash[:], pbt}, tailProof...), err
 }
 
 func (t *Trie) tryProve(origNode node, key []byte, pos int) (proof [][]byte, newnode node, didResolve bool, err error) {
@@ -175,27 +183,26 @@ func (t *Trie) tryProve(origNode node, key []byte, pos int) (proof [][]byte, new
 			n = n.copy()
 			n.Val = newnode
 		}
-		var bt []byte
-		bt, err = rlp.EncodeToBytes(n)
-		return append(proof, bt), n, didResolve, err
+		return proof, n, didResolve, err
 	case *FullNode:
 		proof, newnode, didResolve, err = t.tryProve(n.Children[key[pos]], key, pos+1)
 		if err == nil && didResolve {
 			n = n.copy()
 			n.Children[key[pos]] = newnode
 		}
-		var bt []byte
-		bt, err = rlp.EncodeToBytes(n)
-		return append(proof, bt), n, didResolve, err
+		return proof, n, didResolve, err
 	case HashNode:
 		child, err := t.resolveHash(n, key[:pos])
 		if err != nil {
 			return nil, n, true, err
 		}
-		proof, newnode, _, err := t.tryProve(child, key, pos)
-		var bt []byte
-		bt, err = rlp.EncodeToBytes(n)
-		return append(proof, bt), newnode, true, err
+		var pbt []byte
+		pbt, err = t.db.Get([]byte(n))
+		if err != nil {
+			return nil, n, true, err
+		}
+		tailProof, newnode, _, err := t.tryProve(child, key, pos)
+		return append([][]byte{pbt}, tailProof...), newnode, true, err
 	default:
 		panic(fmt.Sprintf("%T: invalid node: %v", origNode, origNode))
 	}
@@ -455,6 +462,7 @@ func (t *Trie) resolve(n node, prefix []byte) (node, error) {
 
 func (t *Trie) resolveHash(n HashNode, prefix []byte) (node, error) {
 	hash := BytesToHash(n)
+	// fmt.Println("resolving", hash)
 	if node := t.db.node(hash); node != nil {
 		return node, nil
 	}
