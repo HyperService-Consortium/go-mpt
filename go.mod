@@ -6,7 +6,6 @@ replace (
 	golang.org/x/sync => github.com/golang/sync v0.0.0-20190423024810-112230192c58
 	golang.org/x/sys => github.com/golang/sys v0.0.0-20190422165155-953cdadca894
 	golang.org/x/text => github.com/golang/text v0.3.0
-	golang.org/x/tools => github.com/golang/tools v0.0.0-20190422233926-fe54fb35175b
 )
 
 require (
