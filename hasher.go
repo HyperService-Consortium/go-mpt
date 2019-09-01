@@ -19,7 +19,7 @@ package trie
 import (
 	"hash"
 	"sync"
-	"github.com/Myriad-Dreamin/go-rlp"
+	"github.com/HyperService-Consortium/go-rlp"
 	"golang.org/x/crypto/sha3"
 )
 

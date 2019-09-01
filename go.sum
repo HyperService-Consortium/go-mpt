@@ -1,7 +1,7 @@
-github.com/Myriad-Dreamin/go-hexutil v1.0.0 h1:dk5E5xS7iLL3xSMkXcNjZS7p2wXNAS14Pmu6qTL7/RM=
-github.com/Myriad-Dreamin/go-hexutil v1.0.0/go.mod h1:dA7CDVx/LjztO02qxAvrdDNDivCdfnAApOBBgprKpnc=
-github.com/Myriad-Dreamin/go-rlp v1.0.1 h1:6ygY9VhxCNjD34q0nOmyqEATkHHh3vfr5yC+mDDobOk=
-github.com/Myriad-Dreamin/go-rlp v1.0.1/go.mod h1:zB5TOEH12Hi6px2FiJF9V8h3NWrSczcHt0tkz91DGIs=
+github.com/HyperService-Consortium/go-hexutil v1.0.0 h1:dk5E5xS7iLL3xSMkXcNjZS7p2wXNAS14Pmu6qTL7/RM=
+github.com/HyperService-Consortium/go-hexutil v1.0.0/go.mod h1:dA7CDVx/LjztO02qxAvrdDNDivCdfnAApOBBgprKpnc=
+github.com/HyperService-Consortium/go-rlp v1.0.1 h1:6ygY9VhxCNjD34q0nOmyqEATkHHh3vfr5yC+mDDobOk=
+github.com/HyperService-Consortium/go-rlp v1.0.1/go.mod h1:zB5TOEH12Hi6px2FiJF9V8h3NWrSczcHt0tkz91DGIs=
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/golang/crypto v0.0.0-20190422183909-d864b10871cd h1:mhLrErKLIynY9Fs2Z/kFJwUzpEZFHltw72hQN1Em5+E=
 github.com/golang/crypto v0.0.0-20190422183909-d864b10871cd/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=

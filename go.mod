@@ -1,4 +1,4 @@
-module github.com/Myriad-Dreamin/go-mpt
+module github.com/HyperService-Consortium/go-mpt
 
 replace (
 	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20190422183909-d864b10871cd
@@ -10,8 +10,8 @@ replace (
 )
 
 require (
-	github.com/Myriad-Dreamin/go-hexutil v1.0.0
-	github.com/Myriad-Dreamin/go-rlp v1.0.1
+	github.com/HyperService-Consortium/go-hexutil v1.0.0
+	github.com/HyperService-Consortium/go-rlp v1.0.1
 	github.com/syndtr/goleveldb v1.0.0
 	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 )
