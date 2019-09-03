@@ -10,8 +10,8 @@ replace (
 )
 
 require (
-	github.com/HyperService-Consortium/go-hexutil v1.0.0
-	github.com/HyperService-Consortium/go-rlp v1.0.1
+	github.com/HyperService-Consortium/go-hexutil v1.0.1-0.20190901115112-895ca17550ce
+	github.com/HyperService-Consortium/go-rlp v1.0.1-0.20190903144357-b5693c05a6b8
 	github.com/syndtr/goleveldb v1.0.0
 	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 )
